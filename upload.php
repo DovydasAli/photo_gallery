@@ -1,4 +1,7 @@
 <?php
+
+    session_start();
+
     error_reporting(0);
 
     $db = mysqli_connect('localhost', 'root', '', 'photo_gallery') or die("could not connect to database"); // database connection
@@ -24,25 +27,28 @@
         $img_name = $_POST['img_name']; // sets image name
         $img_user_id = $_SESSION['user_id']['id']; // sets the images' user_id to the user that is uploading it
 
-        echo "<strong>'$img_user_id'</strong>";
 
         move_uploaded_file($_FILES["image"]["tmp_name"], $dst);  // move image into the {images} folder with 32 characters hex number and image name
         $sql =  "INSERT INTO photos(name, image, user_id) VALUES('$img_name', '$dst_db', '$img_user_id')"; // insert image into database
 
-        $query = mysqli_query($db, $sql);
-
         mysqli_query($db, $sql); // executing insert query
-        echo mysqli_error($db);
 
+//        testing for errors
 
-        if ($query) {
-            echo '<script type="text/javascript"> alert("Image Inserted Successfully!"); </script>';  // alert message
-        } else {
-            echo '<script type="text/javascript"> alert("Error Uploading Image!"); </script>';  // when error occur
-        }
+//        echo "<strong>'$img_user_id'</strong>";
+
+//        echo mysqli_error($db); // testing for error when inserting image to database
+
+//        $query = mysqli_query($db, $sql);
+
+//        if ($query) {
+//            echo '<script type="text/javascript"> alert("Image Inserted Successfully!"); </script>';  // alert message
+//        } else {
+//            echo '<script type="text/javascript"> alert("Error Uploading Image!"); </script>';  // when error occur
+//        }
     }
 
     mysqli_close($db);  // close connection
-//    header('location:index.php');
+    header('location:index.php');
 
 ?>
